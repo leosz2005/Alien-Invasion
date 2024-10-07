@@ -33,7 +33,7 @@ class AlienInvasion:
             print("El bucle del juego esta corriendo...")
             self._check_events()
             self.ship.update()
-            self.bullets.update()
+            self._update_bullets()
             self._update_screen()
             
             # Hace visible la última pantalla dibujada
@@ -71,8 +71,19 @@ class AlienInvasion:
 
     def _fire_bullet(self):
          """Crea una bala y la añade al grupo de balas."""
-         new_bullet = Bullet(self)
-         self.bullets.add(new_bullet)
+         if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
+
+    def _update_bullets(self):
+        """Actualiza la posición de las balas y elimina las antiguas."""
+        # Actualiza la ubicación de las balas
+        self.bullets.update()
+
+        # Elimina las balas que han salido de la pantalla
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
 
     def _update_screen(self):
         # Actualiza las imagenes en la pantalla y cambia a la pantalla nueva
