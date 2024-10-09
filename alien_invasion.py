@@ -1,6 +1,10 @@
 import sys
+from time import sleep
+
 import pygame
+
 from settings import Settings
+from game_stats import GameStats
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
@@ -21,6 +25,9 @@ class AlienInvasion:
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height))
         pygame.display.set_caption("Alien Invasion")
+
+        # Crea una instancia para gestionar las estadísticas del juego
+        self.stats = GameStats(self)
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
@@ -72,6 +79,23 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
 
+    def _ship_hit(self):
+        """ Responde al impacto de un alien con la nave."""
+
+        # Decrementa la cantidad de naves restantes
+        self.stats.ships_left -= 1
+
+        # Limpia la lista de balas y los aliens
+        self.bullets.empty()
+        self.aliens.empty()
+
+        # Crea una nueva flota y centra la nave
+        self._create_fleet()
+        self.ship.center_ship()
+
+        # Detiene el juego
+        sleep(0.5)
+
     def _fire_bullet(self):
          """Crea una bala y la añade al grupo de balas."""
          if len(self.bullets) < self.settings.bullets_allowed:
@@ -108,7 +132,19 @@ class AlienInvasion:
 
         # Comprueba la colision entre la nave y los aliens
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
-            print("Ship hit!!!")
+            self._ship_hit()
+
+        # Comprueba si hay aliens que han alcanzado la parte inferior de la pantalla
+        self._check_aliens_bottom()
+
+    def _check_aliens_bottom(self):
+        """ COmprueba si algún alien se encuentra debajo de la pantalla."""
+        screen_rect = self.screen.get_rect()
+        for alien in self.aliens.sprites():
+            if alien.rect.bottom >= screen_rect.bottom:
+                # Trata este caso de colision con la nave
+                self._ship_hit()
+                break
 
     def _create_fleet(self):
         """Crea la flota de aliens."""

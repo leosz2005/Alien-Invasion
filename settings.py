@@ -7,7 +7,8 @@ class Settings:
         """Inicializa la configuración del juego"""
 
         # Configuración de la nave
-        self.ship_speed = 1.5
+        self.ship_speed = 1.
+        self.ship_limit = 3
 
         # Configuración de los aliens
         self.alien_speed = 1.0
