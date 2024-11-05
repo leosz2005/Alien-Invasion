@@ -44,10 +44,10 @@ class AlienInvasion:
         """Inicia el bucle principal del juego"""
         print("Iniciando juego...")
         while True:
+            self._check_events()
 
             print("El bucle del juego esta corriendo...")
             if self.stats.game_active:
-                self._check_events()
                 self.ship.update()
                 self._update_bullets()
                 self._update_aliens()
@@ -65,6 +65,26 @@ class AlienInvasion:
                      self._check_keydown_events(event)
                 elif event.type == pygame.KEYUP:
                      self._check_keyup_events(event)
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_pos = pygame.mouse.get_pos()
+                    self._check_play_button(mouse_pos)
+
+    def _check_play_button(self, mouse_pos):
+        """Inicia un juego nuevo cuando el jugador hace clic en el botón Play."""
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        if button_clicked and not self.stats.game_active:
+            # Restablece las estadisticas del juego.
+            self.stats.reset_stats()
+            self.stats.game_active = True
+
+            # Se deshace de los aliens y las balas que quedan.
+            self.aliens.empty()
+            self.bullets.empty()
+
+            # Crea una flota nueva y centra la nave
+            self._create_fleet()
+            self.ship.center_ship()
+        
 
     def _check_keydown_events(self, event):
         """Responde a las pulsaciones de teclas."""
