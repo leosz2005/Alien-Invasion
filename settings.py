@@ -16,6 +16,7 @@ class Settings:
         self.screen_width = 1200
         self.screen_height = 800
         self.back_ground = image.load('images/space_bg.bmp')
+        self.bg_color = (230, 230, 230)
 
         # Configuración de las balas
         self.bullet_width = 5
