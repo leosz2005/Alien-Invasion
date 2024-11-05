@@ -36,3 +36,9 @@ class Settings:
 
         # fleet_direction de 1 representa la derecha, -1 representa la izquierda.
         self.fleet_direction = 1
+
+    def increse_speed(self):
+        """Aumenta la velocidad del juego"""
+        self.ship_speed *= self.speedup_scale
+        self.bullet_speed *= self.speedup_scale
+        self.alien_speed *= self.speedup_scale
