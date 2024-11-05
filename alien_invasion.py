@@ -84,6 +84,9 @@ class AlienInvasion:
             # Crea una flota nueva y centra la nave
             self._create_fleet()
             self.ship.center_ship()
+
+            # Oculta el cursor del ratón.
+            pygame.mouse.set_visible(False)
         
 
     def _check_keydown_events(self, event):
@@ -123,6 +126,7 @@ class AlienInvasion:
             sleep(0.5)
         else:
             self.stats.game_active = False
+            pygame.mouse.set_visible(True)
 
     def _fire_bullet(self):
          """Crea una bala y la añade al grupo de balas."""
