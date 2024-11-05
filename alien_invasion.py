@@ -42,10 +42,12 @@ class AlienInvasion:
         while True:
 
             print("El bucle del juego esta corriendo...")
-            self._check_events()
-            self.ship.update()
-            self._update_bullets()
-            self._update_aliens()
+            if self.stats.game_active:
+                self._check_events()
+                self.ship.update()
+                self._update_bullets()
+                self._update_aliens()
+                
             self._update_screen()
             
 
@@ -81,20 +83,22 @@ class AlienInvasion:
 
     def _ship_hit(self):
         """ Responde al impacto de un alien con la nave."""
+        if self.stats.ships_left > 0:
+            # Decrementa la cantidad de naves restantes
+            self.stats.ships_left -= 1
 
-        # Decrementa la cantidad de naves restantes
-        self.stats.ships_left -= 1
+            # Limpia la lista de balas y los aliens
+            self.bullets.empty()
+            self.aliens.empty()
 
-        # Limpia la lista de balas y los aliens
-        self.bullets.empty()
-        self.aliens.empty()
+            # Crea una nueva flota y centra la nave
+            self._create_fleet()
+            self.ship.center_ship()
 
-        # Crea una nueva flota y centra la nave
-        self._create_fleet()
-        self.ship.center_ship()
-
-        # Detiene el juego
-        sleep(0.5)
+            # Detiene el juego
+            sleep(0.5)
+        else:
+            self.stats.game_active = False
 
     def _fire_bullet(self):
          """Crea una bala y la añade al grupo de balas."""
