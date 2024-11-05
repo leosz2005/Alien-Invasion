@@ -19,7 +19,7 @@ class Settings:
         self.bg_color = (230, 230, 230)
 
         # Configuración de las balas
-        self.bullet_width = 300
+        self.bullet_width = 7
         self.bullet_height = 15
         self.bullet_color = (200, 0, 0)
         self.bullets_allowed = 3

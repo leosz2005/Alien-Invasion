@@ -17,6 +17,9 @@ class Scoreboard:
         # Prepara la imagen del marcador
         self.prep_score()
 
+        # Prepara la imagen de la puntuación inicial
+        self.prep_high_score()
+
     def prep_score(self):
         """Convierte la puntuación en una imagen renderizada"""
         rounded_score = round(self.stats.score, -1)
@@ -28,6 +31,25 @@ class Scoreboard:
         self.score_rect.right = self.screen_rect.right - 20
         self.score_rect.top = 20
 
+    def prep_high_score(self):
+        """Convierte la puntuación maxima en una imagen renderizada"""
+        high_score = round(self.stats.high_score, -1)
+        high_score_str = "{:,}".format(high_score)
+        self.high_score_image = self.font.render(high_score_str, True, self.text_color, self.settings.bg_color)
+
+        # Muestra la puntuación maxima en la parte superior derecha de la pantalla
+        self.high_score_rect = self.high_score_image.get_rect()
+        self.high_score_rect.centerx = self.screen_rect.centerx
+        self.high_score_rect.top = self.score_rect.top
+
+
     def show_score(self):
         """Dibuja la puntuación en la pantalla"""
         self.screen.blit(self.score_image, self.score_rect)
+        self.screen.blit(self.high_score_image, self.high_score_rect)
+
+    def check_high_score(self):
+        """Comprueba si la puntuación maxima es mayor"""
+        if self.stats.score > self.stats.high_score:
+            self.stats.high_score = self.stats.score
+            self.prep_high_score()
