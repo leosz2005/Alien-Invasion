@@ -106,6 +106,7 @@ class AlienInvasion:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
             print("Cerrando el juego...")
+            self.stats.save_high_score()
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
@@ -137,6 +138,7 @@ class AlienInvasion:
         else:
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
+            self.stats.save_high_score()    
 
     def _fire_bullet(self):
          """Crea una bala y la añade al grupo de balas."""
