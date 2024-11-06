@@ -1,5 +1,3 @@
-Aquí tienes una presentación actualizada para tu repositorio de GitHub, incluyendo la nueva funcionalidad de instalación automática de dependencias.
-
 ---
 
 # Alien Invasion 🚀👾
